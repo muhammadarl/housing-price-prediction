@@ -21,17 +21,17 @@ def make_prediction(dict):
     log_transform = ["LotArea", "LowQualFinSF", "KitchenAbvGr", "3SsnPorch", "ScreenPorch", "PoolArea", "MiscVal"]
     for col in log_transform:
         df[col] = np.log1p(df[col])
-    loaded_model = pickle.load(open("../ext/Neighborhood.pkl", 'rb'))
+    loaded_model = pickle.load(open("ext/Neighborhood.pkl", 'rb'))
     encoded = loaded_model.transform(df["Neighborhood"])
     df= pd.concat([df, encoded], axis=1)
     df.drop("Neighborhood", axis=1, inplace=True)
-    loaded_model = pickle.load(open("../ext/MasVnrType.pkl", 'rb'))
+    loaded_model = pickle.load(open("ext/MasVnrType.pkl", 'rb'))
     encoded = loaded_model.transform(df["MasVnrType"])
     df= pd.concat([df, encoded], axis=1)
     df.drop("MasVnrType", axis=1, inplace=True)
-    loaded_model = pickle.load(open("../ext/scaler.pkl", 'rb'))
+    loaded_model = pickle.load(open("ext/scaler.pkl", 'rb'))
     df = loaded_model.transform(df)
-    loaded_model = pickle.load(open("../ext/finalized_model.pkl", 'rb'))
+    loaded_model = pickle.load(open("ext/finalized_model.pkl", 'rb'))
     predict = loaded_model.predict(df)
     result = np.expm1(predict)
     return result
