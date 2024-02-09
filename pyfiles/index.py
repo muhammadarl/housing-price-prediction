@@ -14,7 +14,7 @@ with tab1:
 
     Kawasan Ames, Iowa, dipilih karena memiliki pasar perumahan yang cukup stabil dengan beragam tipe rumah dan fitur-fitur yang berbeda. Data yang digunakan dalam penELitian ini berasal dari Ames Housing Dataset, yang mencakup berbagai variabel seperti luas tanah, luas bangunan, jumlah kamar, dan fitur-fitur lain yang dapat mempengaruhi harga rumah.
 
-    Metode yang digunakan dalam pengembangan model machine learning meliputi Data Understanding, Data Cleaning & Analysis, Data Modelling, Model Evaluation dan Model Deployment. Algoritma yang digunakan adalah XGBoost Regressor.
+    Metode yang digunakan dalam pengembangan model machine learning meliputi Data Understanding, Data Cleaning & Analysis, Data Modelling, Model Evaluation dan Model Deployment. Algoritma yang digunakan adalah Gradient Boost Regressor.
 
     Hasil dari penelitian ini diharapkan dapat memberikan pemahaman yang lebih baik tentang faktor-faktor apa saja yang mempengaruhi harga rumah di kawasan Ames, Iowa, serta model machine learning yang dapat digunakan untuk memprediksi harga rumah dengan tingkat akurasi yang tinggi.
     """)
@@ -36,8 +36,12 @@ with tab2:
         Metrik digunakan untuk mengevaluasi kinerja model dalam memprediksi harga. Dalam kasus regresi, metrik yang umum digunakan adalah Root Mean Square Error (RMSE). Metrik ini mengukur seberapa besar deviasi antara hasil prediksi dan nilai aktual
     """)
     st.header('Data Understanding')
-    train_df = pd.read_csv('dataset/train.csv')
-    test_df = pd.read_csv('dataset/test.csv')
+    try:
+        train_df = pd.read_csv('dataset/train.csv')
+        test_df = pd.read_csv('dataset/test.csv')
+    except:
+        train_df = pd.read_csv('../dataset/train.csv')
+        test_df = pd.read_csv('../dataset/test.csv')
     st.subheader('Training Data')
     col1, col2 = st.columns([9,3])
     with col1:
@@ -73,7 +77,10 @@ with tab3:
     test_df.drop('Id', axis=1,  inplace=True)
     """)
     st.subheader('Missing Values')
-    st.image("image/train_missing_value.png")
+    try:
+        st.image("image/train_missing_value.png")
+    except:
+        st.write('../image/train_missing_value.png')
     st.code("""
     train_missing_data = preprocessing.calculate_missing_data(train_df)
     plt.figure(figsize=(13, 5))
@@ -84,7 +91,11 @@ with tab3:
     plt.xticks(rotation=45, ha='right')
     st.pyplot(plt)
     """)
-    st.image("image/test_missing_value.png")
+    try:
+        st.image("image/test_missing_value.png")
+    except:
+        st.write('../image/test_missing_value.png')
+
     st.code("""
     test_missing_data = preprocessing.calculate_missing_data(test_df)
     plt.figure(figsize=(13, 5))
@@ -158,7 +169,10 @@ with tab3:
     st.code("""
     sns.histplot(train['SalePrice'], kde=True)
     """, language='python')
-    st.image("image/log_transform_on_target.png")
+    try:
+        st.image("image/log_transform_on_target.png")
+    except:
+        st.write('../image/log_transform_on_target.png')
     st.caption("Dapat dilihat bahwa target SalePrice memiliki skew positif ke kanan, hal ini akan berdampak pada keakuratan regresi linear yang akan digunakan. Agar regresi linear dapat dilakukan dengan akuran, log transform akan dilakukan pada target.")
     st.code("""
     def log_transform(y):
@@ -174,7 +188,10 @@ def inverse_log_transform(y_log):
 
 sns.histplot(train['SalePrice'], kde=True)
 """)
-    st.image("image/log_transform_on_target_normal.png")
+    try:
+        st.image("image/log_transform_on_target_normal.png")
+    except:
+        st.write('../image/log_transform_on_target_normal.png')
     st.caption("Setelah dilakukan log transform, distribusi target SalePrice menjadi lebih normal.")
     st.subheader('Handling Outliers')
     st.code("""
@@ -247,7 +264,10 @@ corr_train['statistical_significance'] = corr_train['p_value'].apply(lambda p:
   'not_statistically_significant'
 )
 """)
-    st.image("image/correlatiion_numerical.png")
+    try:
+        st.image("image/correlatiion_numerical.png")
+    except:
+        st.write('../image/correlatiion_numerical.png')
     st.write("""
     Terdapat 4 fitur yang memiliki korelasi yang rendah dan secara statistik tidak significant. Fitur-Fitur tersebut adalah
 
@@ -276,7 +296,10 @@ corr_train['statistical_significance'] = corr_train['p_value'].apply(lambda p:
 
     plt.tight_layout()
     """)
-    st.image("image/correlatiion_categorical.png")
+    try:
+        st.image("image/correlatiion_categorical.png")
+    except:
+        st.write('../image/correlatiion_categorical.png')
     st.write("""
     Dari analisa BoxPlot, terdapat beberapa fitur yang memiliki korelasi yang signifikan dengan SalePrice. Hal ini ditandai dengan terpisahnya bagian IQR boxplot pada tiap unique value di fitur kategori tertentu. Fitur-fitur tersebut adalah:
 
